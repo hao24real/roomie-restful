@@ -1,9 +1,10 @@
 module.exports= function(socket) {
+
 	var addedUser = false;
 	var private_room_ID = 0;
 
 	//accept client's subscription to the chat room
-	socket.on('join chat', function(room_ID){
+	socket.on('subscribe', function(room_ID){
 		//join the room
 		socket.join(room_ID);
 		private_room_ID = room_ID;
@@ -22,6 +23,7 @@ module.exports= function(socket) {
 	socket.on('add user', function(username){
 		// this prevent same user being added twice to the room
 		if(addedUser) return;
+
 		socket.username = username;
 		addedUser = true;
 
@@ -34,7 +36,7 @@ module.exports= function(socket) {
 	//when client tell server it is currently typing
 	socket.on('typing', function(){
 		//server tell all the other clients that the client is typing
-		socket.broadcast.to(private_room_ID).emit('typing'{
+		socket.broadcast.to(private_room_ID).emit('typing', {
 			username: socket.username
 		});
 	});
@@ -42,7 +44,7 @@ module.exports= function(socket) {
 	//when client tell server it stop typing
 	socket.on('stop typing', function(){
 		//server tell all the other clients that the client stop typing
-		socket.broadcast.to(private_room_ID).emit('stop typing'{
+		socket.broadcast.to(private_room_ID).emit('stop typing', {
 			username: socket.username
 		});
 	});
@@ -56,4 +58,6 @@ module.exports= function(socket) {
 			});
 		}
 	});
+
 };
+
