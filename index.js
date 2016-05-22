@@ -17,10 +17,6 @@ server.listen(port, function(){
 });
 
 
-// Routing
-app.use(express.static(__dirname + '/public'));
-
-
 io.on('connection', function(socket){
 	//get the module of chatting
 	var privateChat = require('./privateChat')(socket);
