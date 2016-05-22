@@ -1,0 +1,16 @@
+{
+  "name": "cse110-dev-server",
+  "version": "0.0.0",
+  "description": "chat and notification client using socket.io",
+  "main": "index.js",
+  "author": "Hao Tu",
+  "private": true,
+  "license": "BSD",
+  "dependencies": {
+    "socket.io":"*",
+    "express":"*"
+  },
+  "scripts":{
+    "start": "node ."
+  }
+}
