@@ -18,7 +18,7 @@ module.exports= function(socket) {
 	//notification from client to specific reciever of common share good
 	socket.on('notification csg', function(reciever_id, csg_type){
 		socket.join(reciever_id);
-		socket.broadcast.to(reciever_id).emit('notification duty', {
+		socket.broadcast.to(reciever_id).emit('notification csg', {
 			csg: csgtype
 		});
 		socket.leave(reciever_id);

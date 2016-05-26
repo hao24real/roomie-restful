@@ -10,7 +10,6 @@ var io = require('socket.io')(server);
 // forwarding the port to 3000 for us to test on local host
 var port = process.env.PORT|| 3000;
 
-
 //start listening to incoming http request
 server.listen(port, function(){
 	console.log('Server listening at port %d', port);
@@ -25,4 +24,3 @@ io.on('connection', function(socket){
 	var notification = require('./notification')(socket);
 
 });
-
