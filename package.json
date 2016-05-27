@@ -7,10 +7,11 @@
   "private": true,
   "license": "BSD",
   "dependencies": {
-    "socket.io":"*",
-    "express":"*"
+    "express": "*",
+    "fcm": "^1.0.3",
+    "socket.io": "*"
   },
-  "scripts":{
+  "scripts": {
     "start": "node ."
   }
 }
