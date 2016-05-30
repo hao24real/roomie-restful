@@ -4,18 +4,23 @@ module.exports= function(socket) {
 	
 	//accept client's subscription to the chat room
 	socket.on('listen to notification', function(my_notification_id){
+		console.log('listen to notification: ' + my_notification_id);
 		//join the room
 		socket.join(my_notification_id);
 	});
 
 	//accept client's subscription to listen to group's notification
 	socket.on('listen to completion',function(group_num_id){
+		console.log('listen to completion: ' + group_num_id);
 		group_id =  group_num_id + "g";
 		socket.join(group_id);
 	});
 
 	//notification from client to specific reciever of duty type
 	socket.on('notification duty', function(reciever_id, duty_type){
+
+		console.log('notification duty to: ' + reciever_id);
+
 		socket.join(reciever_id);
 		socket.broadcast.to(reciever_id).emit('notification duty', {
 			duty: duty_type

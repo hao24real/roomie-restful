@@ -46,6 +46,8 @@ module.exports = function(socket, tedious){
 	//accept client's subscription to listen to group's notification
 	socket.on('password retreive',function(user_id, email){
 
+		console.log("password retreive");
+
 		//get the connection to database server 
 		var connection = sql_connection();
 
