@@ -5,6 +5,10 @@ var app = express();
 //get tedious framework for sql query
 var tedious = require('tedious');
 
+//get sendgrid api
+var sendgrid  = require('sendgrid')('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');
+
+
 //create the server base on express framework
 var server = require('http').createServer(app);
 
@@ -27,6 +31,6 @@ io.on('connection', function(socket){
 	var notification = require('./notification')(socket);
 
 	//get the module of the password_retreive
-	var password_retreive = require('./password_retreive')(socket, tedious);
+	var password_retreive = require('./password_retreive')(socket, tedious, sendgrid);
 
 });

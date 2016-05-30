@@ -1,13 +1,11 @@
-module.exports = function(socket, tedious){
+module.exports = function(socket, tedious, sendgrid){
 
 	var Request = tedious.Request;  
 	var TYPES = tedious.TYPES;
 
 	/* the function for sending email */
 	function send_email(email, password){
-
-		var sendgrid  = require('sendgrid')('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');
-
+		
 		var payload   = {
 		  to      : email,
 		  from    : 'password@rip.com',
