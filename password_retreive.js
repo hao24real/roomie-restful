@@ -28,44 +28,45 @@ module.exports = function(socket, tedious){
 
 
 	//function fro connection to sql
-	function sql_connection(){
+	// function sql_connection(){
 
-		var Connection = tedious.Connection;  
-		var config = {  
-		    userName: 'h4tu',  
-		    password: 'R!Pdevl0g',  
-		    server: 'rationallyimpairedprogrammers.database.windows.net',  
-		    // If you are on Microsoft Azure, you need this:  
-		    options: {encrypt: true, database: 'cse110_dev'}  
-		};  
-		var connection = new Connection(config);  
+	// 	var Connection = tedious.Connection;  
+	// 	var config = {  
+	// 	    userName: 'h4tu',  
+	// 	    password: 'R!Pdevl0g',  
+	// 	    server: 'rationallyimpairedprogrammers.database.windows.net',  
+	// 	    // If you are on Microsoft Azure, you need this:  
+	// 	    options: {encrypt: true, database: 'cse110_dev'}  
+	// 	};  
+	// 	var connection = new Connection(config);  
 
-		return connection;
-	}
+	// 	return connection;
+	// }
+
 
 	//accept client's subscription to listen to group's notification
-	socket.on('password retreive',function(user_id, email){
+	socket.on('password retreive',function(email){
 
 		//get the connection to database server 
-		var connection = sql_connection();
+		// var connection = sql_connection();
 
 		//generate the random password string
 		var new_password = generate_random_password();
 
-		connection.on('connect', function(err) {  
-			// If no error, then good to proceed.  
-		    console.log("Connected"); 
+		// connection.on('connect', function(err) {  
+		// 	// If no error, then good to proceed.  
+		//     console.log("Connected"); 
 
-		    //build request for query
-		    request = new Request("EXEC ChangePassword @userId = " + user_id 
-		    		+ ", @password = '"+ new_password +"'", function(err) {  
-			    if (err) {
-			        console.log(err);
-			    }  
-		    });  
-		    //execute the query to change password
-		    connection.execSql(request);  
-		});
+		//     //build request for query
+		//     request = new Request("EXEC ChangePassword @userId = " + user_id 
+		//     		+ ", @password = '"+ new_password +"'", function(err) {  
+		// 	    if (err) {
+		// 	        console.log(err);
+		// 	    }  
+		//     });  
+		//     //execute the query to change password
+		//     connection.execSql(request);  
+		// });
 
 		//send the email via sendgrid
 		send_email(email, new_password);
