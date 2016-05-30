@@ -48,14 +48,16 @@ module.exports= function(socket) {
 		});
 	});
 
-	//not implemented for now
-	//notification from client to specific reciever of common share good
-	/*socket.on('notification bill', function(reciever_id, bill_type){
-		socket.join(reciever_id);
-		socket.broadcast.to(reciever_id).emit('notification duty', {
-			csg: csgtype
+	//notification from client to tell a person who owe you money
+	socket.on('notification bill', function(reciever_id, 
+		sender_firstname, bill_amount, bill_description){
+		socket.broadcast.to(reciever_id).emit('notification bill', {
+			user: user_firstname, 
+			amount: amount,
+			description: bill_description
 		});
-		socket.leave(reciever_id);
-	});*/
+	});
+
+
 
 };

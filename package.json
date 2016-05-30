@@ -9,7 +9,8 @@
   "dependencies": {
     "express": "*",
     "fcm": "^1.0.3",
-    "socket.io": "*"
+    "socket.io": "*",
+    "tedious": "^1.14.0"
   },
   "scripts": {
     "start": "node ."
