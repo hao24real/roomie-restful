@@ -8,7 +8,7 @@ module.exports = function(socket, tedious, sendgrid){
 		
 		var payload   = {
 		  to      : email,
-		  from    : 'password@rip.com',
+		  from    : 'PasswordHelper@rip.com',
 		  subject : 'No-Reply Password Retreive From Roomie',
 		  text    : 'Please log in again with your new password: ' + password
 		}
@@ -42,9 +42,9 @@ module.exports = function(socket, tedious, sendgrid){
 	}
 
 	//accept client's subscription to listen to group's notification
-	socket.on('password retreive',function(user_id, email){
+	socket.on('password retrieve',function(user_id, email){
 
-		console.log("password retreive");
+		console.log("password retrieve");
 
 		//get the connection to database server 
 		var connection = sql_connection();
@@ -55,14 +55,6 @@ module.exports = function(socket, tedious, sendgrid){
 		connection.on('connect', function(err) {  
 			// If no error, then good to proceed.  
 		    console.log("Connected"); 
-
-		    //build request for query
-		    request = new Request("EXEC ChangePassword @userId = " + user_id 
-		    		+ ", @password = '"+ new_password +"'", function(err) {  
-			    if (err) {
-			        console.log(err);
-			    }  
-		    });
 
 		    //build request for query
 		    request = new Request("EXEC ChangePassword @userId = " + user_id 
