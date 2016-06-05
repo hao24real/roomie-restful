@@ -34,20 +34,37 @@ module.exports= function(socket, tedious, fcm) {
 
 	//notification from client to specific reciever of duty type
 	socket.on('notification duty', function(duty_id, reciever_id, duty_type){
-		
-		// console.log('notification duty to: ' + reciever_id);
+
+
+		console.log('notification duty to: ' + reciever_id);
+		console.log('duty id: '+ duty_id);
+
+
 		var connection = new Connection(config);
 		/*-----------------------SQL Connection--------------------*/
 		connection.on('connect', function(err) {  
 			    // If no error, then good to proceed.  
-		    console.log("Connected"); 
+		    console.log("First Query"); 
 
 		    //build request for query
 		    request = new Request("SELECT Token FROM Users WHERE Users.ID = " +
 		                        reciever_id, function(err) {
 		        if (err) {
 		            console.log(err);
-		        }  
+		        } 
+
+		        console.log("Second Query");		
+					  //build request for query
+				    request = new Request("EXEC UpdateDutyTime @id = " +
+				                        duty_id , function(err) {
+				        if (err) {
+				            console.log(err);
+				        }  
+				        connection.close();
+				    }); 
+				    
+				    //execute the query to change password
+				    connection.execSql(request);
 		        // connection.close();
 		    }); 
 		    
@@ -75,23 +92,8 @@ module.exports= function(socket, tedious, fcm) {
 		    }); 
 		    //execute the query to change password
 		    connection.execSql(request); 
-
-
-		    //build request for query
-		    request = new Request("EXEC UpdateDutyTime @id = " +
-		                        duty_id , function(err) {
-		        if (err) {
-		            console.log(err);
-		        }  
-		        connection.close();
-		    }); 
-		    
-		    //execute the query to change password
-		    connection.execSql(request);
-
 		});
 
-		/*-----------------------SQL Connection--------------------*/
 
 	});
 
@@ -99,11 +101,13 @@ module.exports= function(socket, tedious, fcm) {
 	//notification from client to all other group mate for duty completion
 	socket.on('complete duty', function(user_firstname, duty_type){
 
+		console.log("complete duty"); 
+
 		var connection = new Connection(config);
 		/*-----------------------SQL Connection--------------------*/
 		connection.on('connect', function(err) {  
 		    // If no error, then good to proceed.  
-		    console.log("Connected"); 
+		    console.log("Start Query"); 
 
 		    //build request for query
 		    request = new Request('EXEC FindUserFromGroup @groupid = ' + 
@@ -111,10 +115,15 @@ module.exports= function(socket, tedious, fcm) {
 		        if (err) {
 		            console.log(err);
 		        }  
+
+		        console.log("Query call back");
+
 		        connection.close();
 		    }); 
 		    
 		    request.on('row', function(columns) { 
+
+					console.log("iterate through row"); 
 
 		    	columns.forEach(function(column) {
 			      if (column.value === null) {
@@ -133,10 +142,10 @@ module.exports= function(socket, tedious, fcm) {
 			            if (err) {
 			                console.log("Something has gone wrong!");
 			            } else {
-			                console.log("Sent with message ID: ", messageId);
+			                console.log("Sent with notification ID: ", token_result);
 			            }
 			        });
-			
+		
 			/*-----------------------Firebase Push--------------------*/
 			      }
 			    });
@@ -157,12 +166,12 @@ module.exports= function(socket, tedious, fcm) {
 		// 	csg: csgtype
 		// });
 		// socket.leave(reciever_id);
-				// console.log('notification duty to: ' + reciever_id);
+		console.log('notification common good to: ' + reciever_id);
 		var connection = new Connection(config);
 		/*-----------------------SQL Connection--------------------*/
 		connection.on('connect', function(err) {  
 			    // If no error, then good to proceed.  
-		    console.log("Connected"); 
+		    console.log("First Query"); 
 
 		    //build request for query
 		    request = new Request("SELECT Token FROM Users WHERE Users.ID = " +
@@ -170,7 +179,21 @@ module.exports= function(socket, tedious, fcm) {
 		        if (err) {
 		            console.log(err);
 		        }  
-		        // connection.close();
+
+		        console.log("Second Query");
+
+    		    //build request for query
+				    request = new Request("EXEC UpdateCSGTime @id = " +
+				                        csg_id, function(err) {
+				        if (err) {
+				            console.log(err);
+				        }  
+				        connection.close();
+				    }); 
+		    
+				    //execute the query to change password
+				    connection.execSql(request); 
+
 		    }); 
 		    
 		    request.on('row', function(columns) { 
@@ -194,18 +217,6 @@ module.exports= function(socket, tedious, fcm) {
 
 		/*-----------------------Firebase Push--------------------*/
 		    }); 
-		    //execute the query to change password
-		    connection.execSql(request); 
-
-		    //build request for query
-		    request = new Request("EXEC UpdateCSGTime @id = " +
-		                        csg_id, function(err) {
-		        if (err) {
-		            console.log(err);
-		        }  
-		        connection.close();
-		    }); 
-		    
 		    //execute the query to change password
 		    connection.execSql(request); 
 
@@ -233,6 +244,7 @@ module.exports= function(socket, tedious, fcm) {
 		        if (err) {
 		            console.log(err);
 		        }  
+
 		        connection.close();
 		    }); 
 		    
@@ -274,12 +286,13 @@ module.exports= function(socket, tedious, fcm) {
 	//notification from client to tell a person who owe you money
 	socket.on('notification bill', function(bill_id, reciever_id, 
 		sender_firstname, bill_amount, bill_description){
-		// console.log('notification duty to: ' + reciever_id);
+		console.log('notification bill to: ' + reciever_id);
+
 		var connection = new Connection(config);
 		/*-----------------------SQL Connection--------------------*/
 		connection.on('connect', function(err) {  
 			    // If no error, then good to proceed.  
-		    console.log("Connected"); 
+		    console.log("First Query"); 
 
 		    //build request for query
 		    request = new Request("SELECT Token FROM Users WHERE Users.ID = " +
@@ -287,7 +300,20 @@ module.exports= function(socket, tedious, fcm) {
 		        if (err) {
 		            console.log(err);
 		        }  
-		        // connection.close();
+
+		        console.log("Second Query");
+		        //build request for query
+				    request = new Request("EXEC UpdateBillTime @id = " +
+				                        bill_id , function(err) {
+				        if (err) {
+				            console.log(err);
+				        }  
+				        connection.close();
+				    }); 
+				    
+				    //execute the query to change password
+				    connection.execSql(request); 
+
 		    }); 
 		    
 		    request.on('row', function(columns) { 
@@ -308,23 +334,8 @@ module.exports= function(socket, tedious, fcm) {
 		                console.log("Sent with message ID: ", messageId);
 		            }
 		        });
-		
 		/*-----------------------Firebase Push--------------------*/
-
 		    }); 
-		    //execute the query to change password
-		    connection.execSql(request); 
-
-
-		    //build request for query
-		    request = new Request("EXEC UpdateBillTime @id = " +
-		                        bill_id , function(err) {
-		        if (err) {
-		            console.log(err);
-		        }  
-		        connection.close();
-		    }); 
-		    
 		    //execute the query to change password
 		    connection.execSql(request); 
 
