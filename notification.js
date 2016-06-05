@@ -55,7 +55,7 @@ module.exports= function(socket, tedious, fcm) {
 
 		        console.log("Second Query");		
 					  //build request for query
-				    request = new Request("EXEC UpdateDutyTime @id = " +
+				    request = new Request('EXEC UpdateDutyTime @id = ' +
 				                        duty_id , function(err) {
 				        if (err) {
 				            console.log(err);
@@ -118,12 +118,14 @@ module.exports= function(socket, tedious, fcm) {
 
 		        console.log("Query call back");
 
-		        request = new Request("EXEC RefreshDutyTime @id = " +
+		        console.log("duty id is " + duty_id);
+
+		        request = new Request('EXEC RefreshDutyTime @id = ' +
 				                        duty_id , function(err) {
 				        if (err) {
-				            console.log(err);
+				            console.log(err + " in complete duty");
 				        }  
-				        connection.close();
+				        // connection.close();
 				    }); 
 				    
 				    //execute the query to change password
