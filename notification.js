@@ -79,7 +79,7 @@ module.exports= function(socket, tedious, fcm) {
 
 		    //build request for query
 		    request = new Request("EXEC UpdateDutyTime @id = " +
-		                        bill_id , function(err) {
+		                        duty_id , function(err) {
 		        if (err) {
 		            console.log(err);
 		        }  
