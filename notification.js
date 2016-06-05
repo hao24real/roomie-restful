@@ -99,7 +99,7 @@ module.exports= function(socket, tedious, fcm) {
 
 
 	//notification from client to all other group mate for duty completion
-	socket.on('complete duty', function(user_firstname, duty_type){
+	socket.on('complete duty', function(duty_id, user_firstname, duty_type){
 
 		console.log("complete duty"); 
 
@@ -118,7 +118,16 @@ module.exports= function(socket, tedious, fcm) {
 
 		        console.log("Query call back");
 
-		        connection.close();
+		        request = new Request("EXEC RefreshDutyTime @id = " +
+				                        duty_id , function(err) {
+				        if (err) {
+				            console.log(err);
+				        }  
+				        connection.close();
+				    }); 
+				    
+				    //execute the query to change password
+				    connection.execSql(request);
 		    }); 
 		    
 		    request.on('row', function(columns) { 
@@ -155,8 +164,6 @@ module.exports= function(socket, tedious, fcm) {
 		    connection.execSql(request); 
 
 		});
-
-
 	});
 
 	//notification from client to specific reciever of common share good
@@ -227,7 +234,7 @@ module.exports= function(socket, tedious, fcm) {
 	});
 
 	//notification from client to all other group mate for duty completion
-	socket.on('complete common good', function(user_firstname, csg_type){
+	socket.on('complete common good', function(csg_id, user_firstname, csg_type){
 		// socket.broadcast.to(group_id).emit('complete common good', {
 		// 	user: user_firstname,
 		// 	csg: csgtype
@@ -245,7 +252,18 @@ module.exports= function(socket, tedious, fcm) {
 		            console.log(err);
 		        }  
 
-		        connection.close();
+		        console.log("Query call back");
+
+		        request = new Request("EXEC RefreshCSGTime @id = " +
+				                        csg_id , function(err) {
+				        if (err) {
+				            console.log(err);
+				        }  
+				        connection.close();
+				    }); 
+				    
+				    //execute the query to change password
+				    connection.execSql(request);
 		    }); 
 		    
 		    request.on('row', function(columns) { 
