@@ -16,7 +16,7 @@ var io = require('socket.io')(server);
 
 //get fcm connection
 var FCM = require('fcm').FCM;
-var apiKey = 'AIzaSyCJ_yG4PZ-e2ENsJIvmy0h-HtL52SXoMzE';
+var apiKey = 'AIzaSyCPdNwmqf8EDIKQHzB-U_K2GfLENZIwej4';
 var fcm = new FCM(apiKey);
 
 
